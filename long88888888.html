@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阳光小区便民服务信息平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0 30px;
+            position: relative;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+        }
+        
+        .logo i {
+            font-size: 32px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow);
+            margin: 20px 0 30px;
+            transition: var(--transition);
+        }
+        
+        .search-box:focus-within {
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .search-box i {
+            color: var(--gray);
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+            background: transparent;
+        }
+        
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .category-btn {
+            background: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+        }
+        
+        .category-btn i {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .category-btn.active i {
+            color: white;
+        }
+        
+        .info-section h2 {
+            font-size: 1.4rem;
+            margin: 25px 0 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-section h2 i {
+            margin-right: 10px;
+            color: var(--primary);
+        }
+        
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+        }
+        
+        .service-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .service-card h3 i {
+            margin-right: 8px;
+            color: var(--secondary);
+        }
+        
+        .contact-info {
+            margin: 15px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 0;
+        }
+        
+        .contact-item i {
+            width: 30px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .phone-link {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .phone-link:hover {
+            color: var(--primary);
+        }
+        
+        .call-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: var(--transition);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .call-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .notes {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+            grid-column: 1 / -1;
+        }
+        
+        .no-results i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ddd;
+        }
+        
+        @media (max-width: 600px) {
+            .service-list {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .categories {
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+            </div>
+            <h1>阳光小区便民服务信息平台</h1>
+            <p class="subtitle">一键联系，便捷生活</p>
+        </header>
+        
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="搜索服务或电话号码...">
+        </div>
+        
+        <div class="categories">
+            <button class="category-btn active" data-category="all">
+                <i class="fas fa-star"></i> 全部
+            </button>
+            <button class="category-btn" data-category="inspection">
+                <i class="fas fa-home"></i> 验房服务
+            </button>
+            <button class="category-btn" data-category="repair">
+                <i class="fas fa-tools"></i> 维修服务
+            </button>
+            <button class="category-btn" data-category="cleaning">
+                <i class="fas fa-broom"></i> 清洁服务
+            </button>
+            <button class="category-btn" data-category="security">
+                <i class="fas fa-shield-alt"></i> 安防服务
+            </button>
+        </div>
+        
+        <div class="info-section">
+            <h2><i class="fas fa-th-list"></i> 便民服务信息</h2>
+            <div class="service-list" id="serviceList">
+                <!-- 服务信息将通过JavaScript动态加载 -->
+            </div>
+        </div>
+        
+        <footer>
+            <p>阳光小区业主委员会 © 2023 | 数据更新于2023年10月15日</p>
+            <p>温馨提示：点击电话号码可直接拨打</p>
+        </footer>
+    </div>
+
+    <script>
+        // 服务数据
+        const services = [
+            {
+                id: 1,
+                name: "专业验房师 - 张师傅",
+                category: "inspection",
+                contacts: [
+                    { type: "phone", value: "13800138000" },
+                    { type: "wechat", value: "zhang_inspection" }
+                ],
+                description: "十年验房经验，提供专业验房服务，可检测房屋质量、水电、防水等问题",
+                notes: "提前1天预约，工作时间8:00-18:00"
+            },
+            {
+                id: 2,
+                name: "纱窗维修 - 王师傅",
+                category: "repair",
+                contacts: [
+                    { type: "phone", value: "13900139000" }
+                ],
+                description: "各类纱窗维修、更换，金刚网纱窗定制安装",
+                notes: "提供免费上门测量服务"
+            },
+            {
+                id: 3,
+                name: "家电维修 - 李师傅",
+                category: "repair",
+                contacts: [
+                    { type: "phone", value: "13700137000" },
+                    { type: "phone", value: "13700137001" }
+                ],
+                description: "冰箱、空调、洗衣机、热水器等家电维修",
+                notes: "首次上门检测费30元"
+            },
+            {
+                id: 4,
+                name: "保洁服务 - 阳光家政",
+                category: "cleaning",
+                contacts: [
+                    { type: "phone", value: "400-123-4567" }
+                ],
+                description: "日常保洁、深度清洁、开荒保洁、擦玻璃服务",
+                notes: "提前2小时预约，3小时起订"
+            },
+            {
+                id: 5,
+                name: "开锁换锁 - 安防锁业",
+                category: "security",
+                contacts: [
+                    { type: "phone", value: "13600136000" }
+                ],
+                description: "公安备案，专业开锁、换锁、修锁、指纹锁安装",
+                notes: "24小时紧急服务"
+            },
+            {
+                id: 6,
+                name: "水电维修 - 赵师傅",
+                category: "repair",
+                contacts: [
+                    { type: "phone", value: "13500135000" }
+                ],
+                description: "水管维修、电路检修、灯具安装、开关插座更换",
+                notes: "材料费另计"
+            },
+            {
+                id: 7,
+                name: "甲醛检测 - 绿源环保",
+                category: "inspection",
+                contacts: [
+                    { type: "phone", value: "400-789-1234" }
+                ],
+                description: "专业甲醛检测与治理，CMA认证报告",
+                notes: "检测后出具正规报告"
+            },
+            {
+                id: 8,
+                name: "监控安装 - 安防科技",
+                category: "security",
+                contacts: [
+                    { type: "phone", value: "13400134000" },
+                    { type: "wechat", value: "security_tech" }
+                ],
+                description: "家庭监控安装、网络调试、智能家居布线",
+                notes: "提供免费设计方案"
+            }
+        ];
+
+        // 渲染服务列表
+        function renderServices(servicesToRender) {
+            const serviceList = document.getElementById('serviceList');
+            
+            if (servicesToRender.length === 0) {
+                serviceList.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h3>没有找到相关服务</h3>
+                        <p>请尝试其他搜索关键词或分类</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            serviceList.innerHTML = servicesToRender.map(service => `
+                <div class="service-card" data-category="${service.category}">
+                    <h3><i class="fas fa-hand-holding-heart"></i> ${service.name}</h3>
+                    <p>${service.description}</p>
+                    
+                    <div class="contact-info">
+                        ${service.contacts.map(contact => `
+                            <div class="contact-item">
+                                <i class="fas ${contact.type === 'phone' ? 'fa-phone-alt' : 'fa-comment'}"></i>
+                                <span>${contact.value}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <a href="tel:${service.contacts[0].value}" class="call-btn">
+                        <i class="fas fa-phone"></i> 一键拨打
+                    </a>
+                    
+                    ${service.notes ? `<div class="notes">${service.notes}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // 初始渲染
+        renderServices(services);
+
+        // 搜索功能
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const activeCategory = document.querySelector('.category-btn.active').dataset.category;
+            
+            const filteredServices = services.filter(service => {
+                const matchesSearch = service.name.toLowerCase().includes(searchTerm) || 
+                                    service.description.toLowerCase().includes(searchTerm) ||
+                                    service.contacts.some(contact => contact.value.includes(searchTerm));
+                
+                const matchesCategory = activeCategory === 'all' || service.category === activeCategory;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            renderServices(filteredServices);
+        });
+
+        // 分类筛选
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 更新活动按钮
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                const searchTerm = searchInput.value.toLowerCase();
+                
+                const filteredServices = services.filter(service => {
+                    const matchesSearch = service.name.toLowerCase().includes(searchTerm) || 
+                                        service.description.toLowerCase().includes(searchTerm) ||
+                                        service.contacts.some(contact => contact.value.includes(searchTerm));
+                    
+                    const matchesCategory = category === 'all' || service.category === category;
+                    
+                    return matchesSearch && matchesCategory;
+                });
+                
+                renderServices(filteredServices);
+            });
+        });
+
+        // 点击电话号码
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('phone-link')) {
+                e.preventDefault();
+                const phoneNumber = e.target.textContent;
+                window.location.href = `tel:${phoneNumber}`;
+            }
+        });
+    </script>
+</body>
+</html>

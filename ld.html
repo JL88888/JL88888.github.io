@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阳光花园便民信息中心</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4ad66d;
+            --warning-color: #f8961e;
+            --danger-color: #ef233c;
+            --gray-color: #adb5bd;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --card-hover-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            line-height: 1.6;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            padding: 0;
+            margin: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 Q50,80 0,100 Z"></path></svg>');
+            background-size: 100% 100%;
+            opacity: 0.5;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+            color: var(--accent-color);
+        }
+        
+        h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-weight: 300;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 2rem;
+            position: relative;
+            top: -2rem;
+            z-index: 10;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--light-color);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus-within {
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .search-box i {
+            color: var(--gray-color);
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        #search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0.8rem 0;
+            font-size: 1rem;
+            outline: none;
+            color: var(--dark-color);
+        }
+        
+        #search-input::placeholder {
+            color: var(--gray-color);
+        }
+        
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+        }
+        
+        .category-tabs::-webkit-scrollbar {
+            height: 5px;
+        }
+        
+        .category-tabs::-webkit-scrollbar-thumb {
+            background: var(--gray-color);
+            border-radius: 10px;
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border-radius: 50px;
+            margin-right: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+            font-weight: 500;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .tab:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--card-hover-shadow);
+        }
+        
+        .tab.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .category-content {
+            display: none;
+        }
+        
+        .category-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-hover-shadow);
+        }
+        
+        .card-header {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1rem;
+        }
+        
+        .card-title {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: var(--dark-color);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+        }
+        
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+        
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .contact-icon i {
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+        
+        .contact-details {
+            flex: 1;
+        }
+        
+        .contact-name {
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+            color: var(--dark-color);
+        }
+        
+        .contact-phone {
+            color: var(--primary-color);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-phone a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .contact-phone a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .contact-desc {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+            margin-top: 0.3rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            display: none;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+        
+        .no-results h3 {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+        
+        .no-results p {
+            color: var(--gray-color);
+        }
+        
+        .footer {
+            background: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+        }
+        
+        .last-update {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 1rem;
+        }
+        
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            border: none;
+            outline: none;
+        }
+        
+        .floating-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-container {
+                padding: 1rem;
+            }
+            
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <h1>阳光花园便民信息中心</h1>
+            </div>
+            <p class="subtitle">为您提供小区各类便民服务联系方式</p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="搜索服务名称、电话或联系人...">
+            </div>
+        </div>
+        
+        <div class="category-tabs" id="category-tabs">
+            <div class="tab active" data-category="repair">房屋维修</div>
+            <div class="tab" data-category="cleaning">保洁服务</div>
+            <div class="tab" data-category="life">生活服务</div>
+            <div class="tab" data-category="property">物业服务</div>
+            <div class="tab" data-category="education">教育培训</div>
+            <div class="tab" data-category="medical">医疗服务</div>
+        </div>
+        
+        <div class="no-results" id="no-results">
+            <i class="fas fa-search"></i>
+            <h3>没有找到匹配的信息</h3>
+            <p>请尝试其他关键词或选择不同分类</p>
+        </div>
+        
+        <!-- 房屋维修 -->
+        <div class="category-content active" id="repair">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-clipboard-check"></i>
+                        <div class="card-title">验房服务</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">王师傅验房</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13812345678"><i class="fas fa-phone-alt"></i> 138-1234-5678</a>
+                                </div>
+                                <div class="contact-desc">专业验房，提供详细验房报告</div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">李师傅验房</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13987654321"><i class="fas fa-phone-alt"></i> 139-8765-4321</a>
+                                </div>
+                                <div class="contact-desc">10年验房经验，细致认真</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-window-maximize"></i>
+                        <div class="card-title">纱窗维修</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">张师傅纱窗</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13755558888"><i class="fas fa-phone-alt"></i> 137-5555-8888</a>
+                                </div>
+                                <div class="contact-desc">纱窗更换、维修、清洗</div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">小区定点纱窗</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13666669999"><i class="fas fa-phone-alt"></i> 136-6666-9999</a>
+                                </div>
+                                <div class="contact-desc">各类纱窗定制安装</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-tools"></i>
+                        <div class="card-title">水电维修</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">赵水电工</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13511112222"><i class="fas fa-phone-alt"></i> 135-1111-2222</a>
+                                </div>
+                                <div class="contact-desc">24小时水电急修</div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">物业水电组</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87654321"><i class="fas fa-phone-alt"></i> 8765-4321</a>
+                                </div>
+                                <div class="contact-desc">工作时间：8:00-17:30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-paint-roller"></i>
+                        <div class="card-title">墙面维修</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">陈师傅墙面</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13344445555"><i class="fas fa-phone-alt"></i> 133-4444-5555</a>
+                                </div>
+                                <div class="contact-desc">墙面修补、粉刷、防水</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-door-open"></i>
+                        <div class="card-title">门窗维修</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">刘师傅门窗</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13899998888"><i class="fas fa-phone-alt"></i> 138-9999-8888</a>
+                                </div>
+                                <div class="contact-desc">门窗维修、更换、锁具安装</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 保洁服务 -->
+        <div class="category-content" id="cleaning">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-broom"></i>
+                        <div class="card-title">日常保洁</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">阳光保洁</div>
+                                <div class="contact-phone">
+                                    <a href="tel:4001234567"><i class="fas fa-phone-alt"></i> 400-123-4567</a>
+                                </div>
+                                <div class="contact-desc">专业家庭保洁，按小时计费</div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">李阿姨保洁</div>
+                                <div class="contact-phone">
+                                    <a href="tel:15888889999"><i class="fas fa-phone-alt"></i> 158-8888-9999</a>
+                                </div>
+                                <div class="contact-desc">个人保洁，价格优惠</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-hammer"></i>
+                        <div class="card-title">开荒保洁</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">专业开荒保洁</div>
+                                <div class="contact-phone">
+                                    <a href="tel:4001112222"><i class="fas fa-phone-alt"></i> 400-111-2222</a>
+                                </div>
+                                <div class="contact-desc">新房开荒，深度清洁</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-couch"></i>
+                        <div class="card-title">沙发清洗</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">洁家沙发清洗</div>
+                                <div class="contact-phone">
+                                    <a href="tel:4008881111"><i class="fas fa-phone-alt"></i> 400-888-1111</a>
+                                </div>
+                                <div class="contact-desc">布艺、皮质沙发专业清洗</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 生活服务 -->
+        <div class="category-content" id="life">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-box-open"></i>
+                        <div class="card-title">快递代收</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">小区快递驿站</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87651234"><i class="fas fa-phone-alt"></i> 8765-1234</a>
+                                </div>
+                                <div class="contact-desc">地址：3号楼1单元101室</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-recycle"></i>
+                        <div class="card-title">废品回收</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">王师傅回收</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13012345678"><i class="fas fa-phone-alt"></i> 130-1234-5678</a>
+                                </div>
+                                <div class="contact-desc">纸板、塑料、金属回收</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-hands-helping"></i>
+                        <div class="card-title">家政服务</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">好帮手家政</div>
+                                <div class="contact-phone">
+                                    <a href="tel:4008889999"><i class="fas fa-phone-alt"></i> 400-888-9999</a>
+                                </div>
+                                <div class="contact-desc">保姆、月嫂、钟点工</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-car"></i>
+                        <div class="card-title">汽车服务</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">小区洗车店</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87659876"><i class="fas fa-phone-alt"></i> 8765-9876</a>
+                                </div>
+                                <div class="contact-desc">地址：小区东门停车场旁</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 物业服务 -->
+        <div class="category-content" id="property">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-building"></i>
+                        <div class="card-title">物业服务中心</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">前台电话</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87654321"><i class="fas fa-phone-alt"></i> 8765-4321</a>
+                                </div>
+                                <div class="contact-desc">工作时间：8:00-20:00</div>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">紧急电话</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87659999"><i class="fas fa-phone-alt"></i> 8765-9999</a>
+                                </div>
+                                <div class="contact-desc">24小时紧急服务</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-tie"></i>
+                        <div class="card-title">物业经理</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">张经理</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13900001111"><i class="fas fa-phone-alt"></i> 139-0000-1111</a>
+                                </div>
+                                <div class="contact-desc">负责小区全面工作</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="card-title">安保服务</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">安保值班室</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87651111"><i class="fas fa-phone-alt"></i> 8765-1111</a>
+                                </div>
+                                <div class="contact-desc">24小时安保服务</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 教育培训 -->
+        <div class="category-content" id="education">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-child"></i>
+                        <div class="card-title">幼儿托管</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">阳光宝贝托管</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87653333"><i class="fas fa-phone-alt"></i> 8765-3333</a>
+                                </div>
+                                <div class="contact-desc">地址：小区会所二楼</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-book"></i>
+                        <div class="card-title">课外辅导</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">李老师数学辅导</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13822223333"><i class="fas fa-phone-alt"></i> 138-2222-3333</a>
+                                </div>
+                                <div class="contact-desc">小学至初中数学辅导</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 医疗服务 -->
+        <div class="category-content" id="medical">
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-clinic-medical"></i>
+                        <div class="card-title">社区诊所</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">阳光社区诊所</div>
+                                <div class="contact-phone">
+                                    <a href="tel:87658888"><i class="fas fa-phone-alt"></i> 8765-8888</a>
+                                </div>
+                                <div class="contact-desc">地址：小区西门旁</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="info-card">
+                    <div class="card-header">
+                        <i class="fas fa-user-md"></i>
+                        <div class="card-title">上门医生</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="contact-details">
+                                <div class="contact-name">王医生</div>
+                                <div class="contact-phone">
+                                    <a href="tel:13955556666"><i class="fas fa-phone-alt"></i> 139-5555-6666</a>
+                                </div>
+                                <div class="contact-desc">内科常见病上门诊疗</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>阳光花园业主委员会 © 2023</p>
+        <p class="last-update">最后更新：2023年11月20日</p>
+    </div>
+    
+    <button class="floating-btn" id="scroll-top" title="返回顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    
+    <script>
+        // 分类标签切换
+        const tabs = document.querySelectorAll('.tab');
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有active类
+                tabs.forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.category-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加active类到当前标签
+                tab.classList.add('active');
+                const categoryId = tab.getAttribute('data-category');
+                document.getElementById(categoryId).classList.add('active');
+                
+                // 隐藏无结果提示
+                document.getElementById('no-results').style.display = 'none';
+            });
+        });
+        
+        // 搜索功能
+        document.getElementById('search-input').addEventListener('input', function() {
+            searchInfo();
+        });
+        
+        function searchInfo() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            const contactItems = document.querySelectorAll('.contact-item');
+            let hasResults = false;
+            
+            if (searchTerm === '') {
+                // 搜索框为空时显示所有内容
+                contactItems.forEach(item => {
+                    item.style.display = 'flex';
+                    hasResults = true;
+                });
+                document.getElementById('no-results').style.display = 'none';
+                return;
+            }
+            
+            contactItems.forEach(item => {
+                const itemText = item.textContent.toLowerCase();
+                if (itemText.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    hasResults = true;
+                    
+                    // 滚动到匹配项
+                    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('no-results').style.display = hasResults ? 'none' : 'block';
+        }
+        
+        // 返回顶部按钮
+        const scrollTopBtn = document.getElementById('scroll-top');
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.style.display = 'flex';
+            } else {
+                scrollTopBtn.style.display = 'none';
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // 点击电话图标直接拨打电话（移动设备）
+        document.querySelectorAll('.contact-phone a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth > 768) {
+                    e.preventDefault();
+                    alert('在手机上点击可以直接拨打电话');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
